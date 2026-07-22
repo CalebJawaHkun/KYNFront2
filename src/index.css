@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/Inter-Regular.ttf");
+}
+
+:root {
+  font-family: "Inter", sans-serif;
+}
