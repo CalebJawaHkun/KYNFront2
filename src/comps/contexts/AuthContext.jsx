@@ -25,12 +25,13 @@ export function AuthProvider({children}) {
     
     const setStatus = async () => {
         setLoading(true)
+        console.log(new Date().toISOString())
         try {
-            const res = await fetch(`${API_URL}/status`, {credentials: 'include'})
+            const res = await fetch(`${API_URL}/status`, {credentials: 'include', cache: 'no-store'})
             // console.log('Status: ', res.status)
             const dat = await res.json()
-            console.log('Status Data received: ', dat)
-            console.log('Updated Login Status: ', dat.loggedIn ? 'Logged In':'Logged Out')
+            //console.log('Status Data received: ', dat)
+            //console.log('Updated Login Status: ', dat.loggedIn ? 'Logged In':'Logged Out')
             setAuth(dat)
         } catch(E) {
             console.error('Error trying to fetch stats: ', E)
@@ -55,7 +56,7 @@ export function AuthProvider({children}) {
 
 
     return (
-        <AuthContext.Provider value={{authDat, setStatus, loading, setLoading, oauthDat}}>
+        <AuthContext.Provider value={{authDat, setStatus, loading, setLoading, oauthDat, setAuth}}>
             {children}
         </AuthContext.Provider>
     )

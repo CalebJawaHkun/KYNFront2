@@ -29,7 +29,7 @@ export default function Profile() {
 
             toast.success("Logged out successfully.");
 
-            await setStatus();
+            // await setStatus();
         }
         catch (err) {
             console.error(err);

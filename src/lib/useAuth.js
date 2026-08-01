@@ -2,9 +2,11 @@ import { toast } from "sonner";
 import useAuthContext from "../comps/contexts/AuthContext";
 const API_URL = import.meta.env.VITE_API_URL;
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function useAuth() {
-    const { setLoading, setStatus  } = useAuthContext()
+    const { setLoading, setStatus, setAuth  } = useAuthContext()
+    const nav = useNavigate()
 
     const authRequest = async (
       endpoint,
@@ -16,6 +18,7 @@ export default function useAuth() {
       }
     ) => {
       setLoading(true);
+      console.log(new Date().toISOString())
     
       try {
         const promise = fetch(`${API_URL}/${endpoint}`, {
@@ -31,19 +34,29 @@ export default function useAuth() {
           if (!res.ok || !data.success) {
             throw new Error(data.message || error);
           }
+
+          const { success, payload } = data
+          setAuth({loggedIn: success, clientData: payload})
     
           // setMsg(data);
           return data;
         });
-    
-        return await toast.promise(promise, {
+   
+        const result = await toast.promise(promise, {
           loading,
           success: (data) => data.message || success,
           error: (err) => err.message,
         });
+
+        
+        return result
+       
+      } catch(e) {
+        
+        console.error(e)
       } finally {
-        await setStatus()
-        setLoading(false);
+        nav('/', {  replace: true })
+        setLoading(false)
       }
     };
 
@@ -60,6 +73,8 @@ export default function useAuth() {
             if (!res.ok || !data.success) {
                 throw new Error(data.message || "Failed to log out.");
             }
+
+            setAuth({ loggedIn: false, clientData: null })
     
             return data;
         });
