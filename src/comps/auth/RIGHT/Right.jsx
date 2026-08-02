@@ -1,5 +1,6 @@
 import RightHeader from "./Header";
-import OAuthButton from "./OAuthButton";
+import GoogleButton from "./GoogleButton";
+import OAuthBtn from "./OAuthBtn";
 import AuthForm from "./ManualForm";
 import TermsAndBottom from "./Terms&Bottom";
 import useAuthLayout from "../useAuthLayout";
@@ -17,6 +18,8 @@ export default function RightCard({authlayoutHook}) {
       touched,
       handleBlur,
     } = authlayoutHook
+
+    const oauths = ['google', 'discord', 'github']
 
 /*     useEffect(() => {
         console.log('Is Loading: ', loading)
@@ -38,8 +41,8 @@ export default function RightCard({authlayoutHook}) {
             "
           >
             <RightHeader isSignIn={isSignIn}/>
-            <OAuthButton loading={loading} toOAuth={toOAuth}/>
-            
+            {oauths.map(v => <OAuthBtn loading={loading} toOAuth={() => toOAuth(v)} provider={v}/>)}
+          
             {/* Divider */}
 
             <div className="my-8 flex items-center">

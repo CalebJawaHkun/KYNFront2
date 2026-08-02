@@ -100,8 +100,8 @@ export default function useAuth() {
         error: "Sign in failed.",
       });
 
-    const toOAuth = async () => {
-      window.location.href = `${API_URL}/auth/google`
+    const toOAuth = async to => {
+      window.location.href = `${API_URL}/auth/${to}`
     }  
 
     return { onLogout, onSignup, onSignin, toOAuth }

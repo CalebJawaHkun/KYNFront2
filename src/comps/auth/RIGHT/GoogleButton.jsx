@@ -2,7 +2,7 @@
 
 import { FcGoogle } from "react-icons/fc";
 
-export default function OAuthButton({ loading, toOAuth }) {
+export default function GoogleButton({ loading, toOAuth }) {
   return (
     <button
       type="button"
