@@ -1,11 +1,11 @@
 import { toast } from "sonner";
 import useAuthContext from "../comps/contexts/AuthContext";
-const API_URL = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function useAuth() {
     const { setLoading, setStatus, setAuth  } = useAuthContext()
+    const API_URL = import.meta.env.VITE_REMOTE_API_URL || import.meta.env.VITE_API_URL
     const nav = useNavigate()
 
     const authRequest = async (
