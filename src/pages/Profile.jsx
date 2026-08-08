@@ -16,6 +16,13 @@ export default function Profile() {
         authType,
     } = authDat.clientData;
 
+    const verificationBadge = {
+        google: "Verified Google Account",
+        github: "Verified GitHub Account",
+        discord: "Verified Discord Account",
+        local: "Verified Local Account",
+    }[authType] || null;
+
     const [loggingOut, setLoggingOut] = useState(false);
 
     const handleLogout = async () => {
@@ -79,18 +86,22 @@ export default function Profile() {
                 </div>
 
                 {/* PROFILE CARD */}
-                {authType !== 'local' &&                 <div className="mx-auto mt-16 max-w-2xl rounded-3xl border border-slate-200 bg-white p-10 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                <div className="mx-auto mt-16 max-w-2xl rounded-3xl border border-slate-200 bg-white p-10 shadow-xl dark:border-slate-800 dark:bg-slate-900">
 
                     <div className="flex flex-col items-center">
 
-                        
-
-                        <img
-                            src={picture}
-                            alt={username}
-                            referrerPolicy="no-referrer"
-                            className="h-32 w-32 rounded-full border-4 border-emerald-500 object-cover shadow-lg"
-                        />
+                        {picture ? (
+                            <img
+                                src={picture}
+                                alt={username}
+                                referrerPolicy="no-referrer"
+                                className="h-32 w-32 rounded-full border-4 border-emerald-500 object-cover shadow-lg"
+                            />
+                        ) : (
+                            <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-emerald-500 bg-emerald-100 text-4xl font-bold text-emerald-700 shadow-lg dark:bg-emerald-900/30 dark:text-emerald-300">
+                                {username?.charAt(0)?.toUpperCase() || "U"}
+                            </div>
+                        )}
 
                         <h2 className="mt-6 text-3xl font-bold dark:text-white">
 
@@ -104,15 +115,19 @@ export default function Profile() {
 
                         </p>
 
-                        {authType === "google" && (
+                        {verificationBadge && (
 
                             <div className="mt-6 flex items-center gap-3 rounded-full bg-emerald-100 px-5 py-2 dark:bg-emerald-900/30">
 
-                                <FcGoogle size={22} />
+                                {authType === "google" ? (
+                                    <FcGoogle size={22} />
+                                ) : (
+                                    <ShieldCheck size={20} className="text-emerald-600 dark:text-emerald-400" />
+                                )}
 
                                 <span className="font-medium text-emerald-700 dark:text-emerald-300">
 
-                                    Verified Google Account
+                                    {verificationBadge}
 
                                 </span>
 
@@ -122,7 +137,7 @@ export default function Profile() {
 
                     </div>
 
-                </div>}
+                </div>
 
 
                 {/* ACCOUNT INFORMATION */}

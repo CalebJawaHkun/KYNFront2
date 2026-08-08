@@ -38,24 +38,22 @@ export default function useAuth() {
           const { success, payload } = data
           setAuth({loggedIn: success, clientData: payload})
     
-          // setMsg(data);
           return data;
         });
    
         const result = await toast.promise(promise, {
           loading,
-          success: (data) => data.message || success,
+          success: (data) => { nav('/', { replace: true }); return data.message || success },
           error: (err) => err.message,
         });
 
         
-        return result
+        return result;
        
       } catch(e) {
-        
         console.error(e)
+        return null;
       } finally {
-        nav('/', {  replace: true })
         setLoading(false)
       }
     };

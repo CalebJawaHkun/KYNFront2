@@ -17,16 +17,26 @@ import { FcGoogle } from "react-icons/fc";
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    const [dark, setDark] = useState(false);
+    const [dark, setDark] = useState(() => {
+        if (typeof window === "undefined") return false;
+
+        const savedTheme = localStorage.getItem("kyn-theme");
+        if (savedTheme) return savedTheme === "dark";
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    });
     const {authDat} = useAuthContext()
     const isLoggedIn = useMemo(() => Boolean(authDat?.loggedIn), [authDat]);
 
     useEffect(() => console.log('User Logged In: ', isLoggedIn), [isLoggedIn])
 
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark", dark);
+        localStorage.setItem("kyn-theme", dark ? "dark" : "light");
+    }, [dark]);
+
     const toggleTheme = () => {
-        document.documentElement.classList.toggle("dark");
-        setDark(!dark);
-        console.log('Triggered')
+        setDark((prev) => !prev);
     };
 
     const nav = useNavigate()

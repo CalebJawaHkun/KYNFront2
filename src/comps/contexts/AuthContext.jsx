@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState, createContext, useMemo } from "react";
+import { toast } from "sonner";
 
 const AuthContext = createContext()
 
@@ -29,6 +30,13 @@ export function AuthProvider({children}) {
         try {
             const res = await fetch(`${API_URL}/status`, {credentials: 'include', cache: 'no-store'})
             console.log('Status: ', res.status)
+
+            if (res.status === 204) {
+                toast.error('Authentication Required!')
+                setAuth({ loggedIn: false, clientData: null })
+                return
+            }
+
             const dat = await res.json()
             console.log('Status Data received: ', dat)
             //console.log('Updated Login Status: ', dat.loggedIn ? 'Logged In':'Logged Out')
